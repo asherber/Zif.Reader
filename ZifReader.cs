@@ -71,9 +71,7 @@ namespace Zif
 
         public void Load(string fileName)
         {
-            CloseInternalStream();
-            _internalStream = File.OpenRead(fileName);
-            Load(_internalStream);
+            this.Load(File.OpenRead(fileName));
         }
 
         public void Load(byte[] bytes)
@@ -83,6 +81,8 @@ namespace Zif
 
         public void Load(Stream inputStream)
         {
+            this.SetInternalStream(inputStream);
+
             DisposeLevels();
             _zoomLevels.Clear();
 
@@ -127,19 +127,20 @@ namespace Zif
                 ((IDisposable)level).Dispose();
         }
 
-        private void CloseInternalStream()
+        private void SetInternalStream(Stream stream)
         {
             if (_internalStream != null)
             {
                 _internalStream.Close();
-                _internalStream = null;
             }
+
+            _internalStream = stream;
         }
 
         public void Dispose()
         {
             DisposeLevels();
-            CloseInternalStream();
+            SetInternalStream(null);
             ((IDisposable)_reader).Dispose();
         }
     }

@@ -40,9 +40,9 @@ namespace Zif
         public int Width { get { return (int)GetIntFromMap(0x0100, 1); } }                 // 256
         public int Height { get { return (int)GetIntFromMap(0x0101, 1); } }                // 257
         public int TileSize { get { return (int)GetIntFromMap(0x0142, 1); } }              // 322
-        public int TileCount { get { return (int)GetIntFromMap(0x0144, 0); } }             // 323
+        public int TileCount { get { return (int)GetIntFromMap(0x0144, 0); } }             // 324
         internal ulong PositionFileOffset { get { return GetIntFromMap(0x0144, 1); } }     // 324
-        internal ulong SizeFileOffset { get { return GetIntFromMap(0x0145, 1); } }         // 324
+        internal ulong SizeFileOffset { get { return GetIntFromMap(0x0145, 1); } }         // 325
 
         public Size Dimensions { get { return new Size((int)this.Width, (int)this.Height); } }
         public int WidthInTiles { get { return (int)Math.Ceiling(1.0 * this.Width / this.TileSize); } }

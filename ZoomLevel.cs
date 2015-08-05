@@ -37,12 +37,12 @@ namespace Zif
         private ulong[][] _allTileInfos = null;
 
         // This all looked nicer with expression-bodied properties, but I didn't want to require C#6
-        public int Width { get { return GetFromMap(0x0100, 1); } }           // 256
-        public int Height { get { return GetFromMap(0x0101, 1); } }          // 257
-        public int TileSize { get { return GetFromMap(0x0142, 1); } }        // 322
-        public int Count { get { return GetFromMap(0x0144, 0); } }           // 323
-        public int PositionOffset { get { return GetFromMap(0x0144, 1); } }  // 324
-        public int SizeOffset { get { return GetFromMap(0x0145, 1); } }      // 324
+        public int Width { get { return (int)GetIntFromMap(0x0100, 1); } }                 // 256
+        public int Height { get { return (int)GetIntFromMap(0x0101, 1); } }                // 257
+        public int TileSize { get { return (int)GetIntFromMap(0x0142, 1); } }              // 322
+        public int TileCount { get { return (int)GetIntFromMap(0x0144, 0); } }             // 323
+        internal ulong PositionFileOffset { get { return GetIntFromMap(0x0144, 1); } }     // 324
+        internal ulong SizeFileOffset { get { return GetIntFromMap(0x0145, 1); } }         // 324
 
         public Size Dimensions { get { return new Size((int)this.Width, (int)this.Height); } }
         public int WidthInTiles { get { return (int)Math.Ceiling(1.0 * this.Width / this.TileSize); } }
@@ -53,11 +53,11 @@ namespace Zif
             _reader = reader;
         }
 
-        private int GetFromMap(int v1, int v2)
+        private ulong GetIntFromMap(int v1, int v2)
         {
-            return (int)_map[v1][v2];
+            return _map[v1][v2];
         }
-        
+
         internal void AddTag(int key, ulong v1, ulong v2)
         {
             _map[key] = new[] { v1, v2 };
@@ -108,11 +108,11 @@ namespace Zif
         {
             if (_allTileInfos == null)
             {
-                _reader.Seek(this.PositionOffset, SeekOrigin.Begin);
-                var positions = _reader.ReadUInt64Array(this.Count);
+                _reader.Seek(this.PositionFileOffset, SeekOrigin.Begin);
+                var positions = _reader.ReadUInt64Array(this.TileCount);
 
-                _reader.Seek(this.SizeOffset, SeekOrigin.Begin);
-                var sizes = _reader.ReadUInt32Array(this.Count);
+                _reader.Seek(this.SizeFileOffset, SeekOrigin.Begin);
+                var sizes = _reader.ReadUInt32Array(this.TileCount);
 
                 _allTileInfos = positions.Select((val, index) => new[] { val, sizes[index] }).ToArray();
             }

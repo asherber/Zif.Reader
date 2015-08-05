@@ -1,7 +1,7 @@
 # Zif.Reader
 C# library to read ZIF files and extract images.
 
-ZIF files are single-file zoomable images. They contain discrete levels of zoom magnification, in which each level is made up of a number of smaller tiles. Here's a [Microsoft article](https://msdn.microsoft.com/en-us/library/cc645050%28VS.95%29.aspx) about this kind of zoomable image. 
+ZIF files are single-file zoomable images. They contain discrete levels of zoom magnification, in which each level is made up of a number of smaller JPEG tiles. Here's a [Microsoft article](https://msdn.microsoft.com/en-us/library/cc645050%28VS.95%29.aspx) about this kind of zoomable image. 
 
 The `ZifReader` class will open a ZIF file on disk, or via a `Stream` or `byte[]`. You can then examine the metadata which describes the different tiles and levels, and you can extract individual tiles or complete assembled levels.
 
@@ -12,7 +12,7 @@ using (var zif = new ZifReader())
 {
     zif.Load("filename.zif");
 
-    int numberOfLevels = zif.ZoomLevels.Count;
+    int numberOfLevels = zif.ZoomLevels.TileCount;
     var biggestLevel = zif.ZoomLevels[0];
 
     int numberOfTiles = biggestLevel.TileCount;

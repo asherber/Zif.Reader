@@ -19,7 +19,7 @@ using (var zif = new ZifReader())
     var upperLeftTile = biggestLevel.GetTileJpeg(0, 0);
 
     var entireImageForLevel = biggestLevel.GetImage();
-    var biggestImage = zif.GetImage(0);
+    var biggestImage = zif.GetImage(0);   // Same as entireImageForLevel
     biggestImage.Save("new_filename.png", ImageFormat.Png);
 }
 ```

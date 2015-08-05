@@ -37,23 +37,24 @@ namespace Zif
         private ulong[][] _allTileInfos = null;
 
         // This all looked nicer with expression-bodied properties, but I didn't want to require C#6
-        public int Width { get { return (int)GetIntFromMap(0x0100, 1); } }                 // 256
-        public int Height { get { return (int)GetIntFromMap(0x0101, 1); } }                // 257
-        public int TileSize { get { return (int)GetIntFromMap(0x0142, 1); } }              // 322
-        public int TileCount { get { return (int)GetIntFromMap(0x0144, 0); } }             // 323
-        internal ulong PositionFileOffset { get { return GetIntFromMap(0x0144, 1); } }     // 324
-        internal ulong SizeFileOffset { get { return GetIntFromMap(0x0145, 1); } }         // 324
+        public int Width { get { return (int)GetFromMap(0x0100, 1); } }                 // 256
+        public int Height { get { return (int)GetFromMap(0x0101, 1); } }                // 257
+        public int TileWidth { get { return (int)GetFromMap(0x0142, 1); } }             // 322
+        public int TileHeight { get { return (int)GetFromMap(0x0143, 1); } }            // 323
+        public int TileCount { get { return (int)GetFromMap(0x0144, 0); } }             // 324
+        internal ulong PositionFileOffset { get { return GetFromMap(0x0144, 1); } }     // 324
+        internal ulong SizeFileOffset { get { return GetFromMap(0x0145, 1); } }         // 325
 
         public Size Dimensions { get { return new Size((int)this.Width, (int)this.Height); } }
-        public int WidthInTiles { get { return (int)Math.Ceiling(1.0 * this.Width / this.TileSize); } }
-        public int HeightInTiles { get { return (int)Math.Ceiling(1.0 * this.Height / this.TileSize); } }
+        public int WidthInTiles { get { return (int)Math.Ceiling(1.0 * this.Width / this.TileWidth); } }
+        public int HeightInTiles { get { return (int)Math.Ceiling(1.0 * this.Height / this.TileHeight); } }
 
         internal ZoomLevel(EndianBinaryReader reader)
         {
             _reader = reader;
         }
 
-        private ulong GetIntFromMap(int v1, int v2)
+        private ulong GetFromMap(int v1, int v2)
         {
             return _map[v1][v2];
         }
@@ -96,7 +97,7 @@ namespace Zif
                     for (int y = 0; y < this.HeightInTiles; y++)
                     {
                         var tile = this.GetTileJpeg(x, y);
-                        gr.DrawImage(tile, x * this.TileSize, y * this.TileSize);                        
+                        gr.DrawImage(tile, x * this.TileWidth, y * this.TileHeight);                        
                     }
                 }
             }

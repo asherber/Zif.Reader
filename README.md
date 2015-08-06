@@ -13,7 +13,8 @@ using (var zif = new ZifReader())
     zif.Load("filename.zif");
 
     int numberOfLevels = zif.ZoomLevels.TileCount;
-    var biggestLevel = zif.ZoomLevels[0];
+    var smallestLevel = zif.ZoomLevels[0];
+    var biggestLevel = zif.ZoomLevels.Last();
 
     int numberOfTiles = biggestLevel.TileCount;
     var upperLeftTile = biggestLevel.GetTileJpeg(0, 0);

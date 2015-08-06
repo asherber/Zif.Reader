@@ -96,8 +96,10 @@ namespace Zif
                 {
                     for (int y = 0; y < this.HeightInTiles; y++)
                     {
-                        var tile = this.GetTileJpeg(x, y);
-                        gr.DrawImage(tile, x * this.TileWidth, y * this.TileHeight);                        
+                        using (var tile = this.GetTileJpeg(x, y))
+                        {
+                            gr.DrawImage(tile, x * this.TileWidth, y * this.TileHeight);
+                        }                   
                     }
                 }
             }

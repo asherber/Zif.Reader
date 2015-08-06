@@ -47,23 +47,27 @@ namespace Zif
 
         public static void Seek(this EndianBinaryReader rdr, ulong offset, SeekOrigin origin)
         {
-            int multiples = (int)(offset / int.MaxValue);
+            ulong multiples = offset / int.MaxValue;
             int remainder = (int)(offset % int.MaxValue);
 
             rdr.Seek(remainder, origin);
-            for (int i = 0; i < multiples; ++i)
+            for (ulong i = 0; i < multiples; ++i)
                 rdr.Seek(int.MaxValue, SeekOrigin.Current);
         }
 
         public static byte[] ReadBytes(this EndianBinaryReader rdr, ulong count)
         {
-            int multiples = (int)(count / int.MaxValue);
+            ulong multiples = count / int.MaxValue;
             int remainder = (int)(count % int.MaxValue);
 
-            var result = new List<byte[]>(multiples + 1);
+            // In practice, we'll never have to read this many bytes.
+            // And we'd run out of memory long before that.
+            if (multiples + 1 > int.MaxValue)
+                throw new ArgumentOutOfRangeException("count");
+            var result = new List<byte[]>((int)multiples + 1);
 
             result.Add(rdr.ReadBytes(remainder));
-            for (int i = 0; i < multiples; ++i)
+            for (ulong i = 0; i < multiples; ++i)
                 result.Add(rdr.ReadBytes(int.MaxValue));
 
             return result.SelectMany(a => a).ToArray();

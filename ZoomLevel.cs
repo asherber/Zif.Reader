@@ -109,11 +109,30 @@ namespace Zif
         {
             if (_allTileInfos == null)
             {
-                _reader.Seek(this.PositionFileOffset, SeekOrigin.Begin);
-                var positions = _reader.ReadUInt64Array(this.TileCount);
+                // For minimal values of TileCount, PositionFileOffset and SizeFileOffset
+                // store the information directly rather than being pointers.
+                ulong[] positions;
+                if (this.TileCount == 1)
+                    positions = new[] { this.PositionFileOffset };
+                else
+                {
+                    _reader.Seek(this.PositionFileOffset, SeekOrigin.Begin);
+                    positions = _reader.ReadUInt64Array(this.TileCount);
+                }
 
-                _reader.Seek(this.SizeFileOffset, SeekOrigin.Begin);
-                var sizes = _reader.ReadUInt32Array(this.TileCount);
+
+                uint[] sizes;
+                if (this.TileCount < 3)
+                {
+                    var sfo = this.SizeFileOffset;
+                    sizes = new[] { (uint)(sfo & 0xFFFFFFFF), (uint)(sfo >> 32) };
+                    sizes = sizes.Take(this.TileCount).ToArray();
+                }
+                else
+                {
+                    _reader.Seek(this.SizeFileOffset, SeekOrigin.Begin);
+                    sizes = _reader.ReadUInt32Array(this.TileCount);
+                }
 
                 _allTileInfos = positions.Select((val, index) => new[] { val, sizes[index] }).ToArray();
             }

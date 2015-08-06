@@ -95,6 +95,9 @@ namespace Zif
             while (_reader.BaseStream.Position < MAX_ZIF_BYTES)
             {
                 ulong offset = _reader.ReadUInt64();
+                if (offset == 0)
+                    break;
+
                 _reader.Seek(offset, SeekOrigin.Begin);
                 var numTags = _reader.ReadUInt64();
 
@@ -102,12 +105,12 @@ namespace Zif
                 for (ulong i = 0; i < numTags; ++i)
                 {
                     var key = _reader.ReadUInt16();
-                    _reader.Seek(2, SeekOrigin.Current);   // next 2 bytes are not used
+                    var notUsed = _reader.ReadUInt16();
                     var val1 = _reader.ReadUInt64();
                     var val2 = _reader.ReadUInt64();
                     level.AddTag(key, val1, val2);
                 }
-                _zoomLevels.Add(level);
+                _zoomLevels.Insert(0, level);
             }            
         }
 

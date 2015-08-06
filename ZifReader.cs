@@ -42,7 +42,7 @@ namespace Zif
     public class ZifReader: IDisposable
     {        
         private EndianBinaryReader _reader;
-        private const int MAX_ZIF_BYTES = 2000;
+        private const int MAX_ZIF_BYTES = 8192;
         private Stream _internalStream = null;
 
         private List<ZoomLevel> _zoomLevels = new List<ZoomLevel>();

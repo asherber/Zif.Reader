@@ -12,7 +12,7 @@ using (var zif = new ZifReader())
 {
     zif.Load("filename.zif");
 
-    int numberOfLevels = zif.ZoomLevels.TileCount;
+    int numberOfLevels = zif.ZoomLevels.Count;
     var smallestLevel = zif.ZoomLevels[0];
     var biggestLevel = zif.ZoomLevels.Last();
 
@@ -20,7 +20,7 @@ using (var zif = new ZifReader())
     var upperLeftTile = biggestLevel.GetTileJpeg(0, 0);
 
     var entireImageForLevel = biggestLevel.GetImage();
-    var biggestImage = zif.GetImage(0);   // Same as entireImageForLevel
+    var biggestImage = zif.GetImage(numberOfLevels - 1);   // Same as entireImageForLevel
     biggestImage.Save("new_filename.png", ImageFormat.Png);
 }
 ```

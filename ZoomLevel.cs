@@ -45,7 +45,8 @@ namespace Zif
         internal ulong PositionFileOffset { get { return GetFromMap(0x0144, 1); } }     // 324
         internal ulong SizeFileOffset { get { return GetFromMap(0x0145, 1); } }         // 325
 
-        public Size Dimensions { get { return new Size((int)this.Width, (int)this.Height); } }
+        public Size Dimensions { get { return new Size(this.Width, this.Height); } }
+        public Size TileDimensions { get { return new Size(this.TileWidth, this.TileHeight); } }
         public int WidthInTiles { get { return (int)Math.Ceiling(1.0 * this.Width / this.TileWidth); } }
         public int HeightInTiles { get { return (int)Math.Ceiling(1.0 * this.Height / this.TileHeight); } }
 

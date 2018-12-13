@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net40</TargetFramework>
+    <Copyright>Copyright 2015</Copyright>
+    <Authors>Aaron Sherber</Authors>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="JonSkeet.MiscUtil" Version="0.1" />
+  </ItemGroup>
+</Project>

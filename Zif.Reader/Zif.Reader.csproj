@@ -3,6 +3,12 @@
     <TargetFramework>net40</TargetFramework>
     <Copyright>Copyright 2015</Copyright>
     <Authors>Aaron Sherber</Authors>
+    <Description>A library to read ZIF files and extract images.</Description>
+    <PackageIconUrl>https://raw.githubusercontent.com/asherber/Zif.Reader/master/Media/ZIF_file.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/asherber/Zif.Reader</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>zif image</PackageTags>
   </PropertyGroup>
   
   <ItemGroup>
